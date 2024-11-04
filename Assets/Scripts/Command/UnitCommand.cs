@@ -1,18 +1,12 @@
 using Command.Player;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+using System.Data;
 /// <summary>
 /// An abstract class representing a unit-related command.
 /// </summary>
 public abstract class UnitCommand : ICommand
 {
     // Fields to store information related to the command.
-    public int ActorUnitID;
-    public int TargetUnitID;
-    public int ActorPlayerID;
-    public int TargetPlayerID;
+    public CommandData commandData;
 
     // References to the actor and target units, accessible by subclasses.
     protected UnitController actorUnit;
@@ -28,4 +22,8 @@ public abstract class UnitCommand : ICommand
     /// Must be implemented by concrete subclasses.
     /// </summary>
     public abstract bool WillHitTarget();
+
+    public void SetActorUnit(UnitController actorUnit) => this.actorUnit = actorUnit;
+
+    public void SetTargetUnit(UnitController targetUnit) => this.targetUnit = targetUnit;
 }

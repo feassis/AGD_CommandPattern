@@ -18,4 +18,12 @@ public  class AttackStanceCommand : UnitCommand
         GameService.Instance.ActionService.GetActionByType(ActionType.AttackStance)
             .PerformAction(actorUnit, targetUnit, willHitTarget);
     }
+
+    public override void Undo()
+    {
+       if(willHitTarget)
+        {
+            targetUnit.UnpowerUp();
+        }
+    }
 }

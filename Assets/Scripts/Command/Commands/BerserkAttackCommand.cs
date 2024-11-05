@@ -20,4 +20,12 @@ public class BerserkAttackCommand : UnitCommand
         GameService.Instance.ActionService.GetActionByType(ActionType.BerserkAttack)
             .PerformAction(actorUnit, targetUnit, willHitTarget);
     }
+
+    public override void Undo()
+    {
+        if(willHitTarget)
+        {
+            targetUnit.RestoreHealth(actorUnit.CurrentPower * 2);
+        }
+    }
 }

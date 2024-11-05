@@ -81,6 +81,18 @@ namespace Command.Player
             unitView.UpdateHealthBar((float) CurrentHealth / CurrentMaxHealth);
         }
 
+        public void PowerUp()
+        {
+            CurrentPower += (int)(CurrentPower * 0.2f);
+        }
+
+        public void UnpowerUp()
+        {
+            var previousPower = CurrentPower/1.2f;
+
+            CurrentPower -= (int)(CurrentPower - previousPower);
+        }
+
         public void RestoreHealth(int healthToRestore)
         {
             CurrentHealth = CurrentHealth + healthToRestore > CurrentMaxHealth ? CurrentMaxHealth : CurrentHealth + healthToRestore;
@@ -149,7 +161,11 @@ namespace Command.Player
 
         public void ResetStats() => CurrentPower = unitScriptableObject.Power;
 
-        public void Revive() => SetAliveState(UnitAliveState.ALIVE);
+        public void Revive()
+        {
+            SetAliveState(UnitAliveState.ALIVE);
+            unitView.PlayAnimation(UnitAnimations.IDLE);
+        }
 
         public void Destroy() => UnityEngine.Object.Destroy(unitView.gameObject);
 

@@ -19,4 +19,12 @@ public class HealCommand : UnitCommand
             .PerformAction(actorUnit, targetUnit, willHitTarget);
     }
 
+    public override void Undo()
+    {
+        if (willHitTarget)
+        {
+            targetUnit.TakeDamage(actorUnit.CurrentPower);
+            actorUnit.Owner.ResetCurrentActiveUnit();
+        }
+    }
 }

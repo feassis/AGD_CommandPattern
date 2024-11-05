@@ -7,6 +7,8 @@ public class CleanseCommand : UnitCommand
     private const float hitChance = 0.2f;
     private bool willHitTarget;
 
+    private int preCleansePower;
+
     public CleanseCommand(CommandData commandData)
     {
         this.commandData= commandData;
@@ -17,7 +19,20 @@ public class CleanseCommand : UnitCommand
 
     public override void Execute()
     {
+        if(willHitTarget)
+        {
+            preCleansePower = targetUnit.CurrentPower;
+        }
+
         GameService.Instance.ActionService.GetActionByType(ActionType.Cleanse)
             .PerformAction(actorUnit, targetUnit, willHitTarget);
+    }
+
+    public override void Undo()
+    {
+        if (willHitTarget)
+        {
+            targetUnit.CurrentPower = preCleansePower;
+        }
     }
 }

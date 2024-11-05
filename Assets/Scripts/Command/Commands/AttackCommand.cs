@@ -15,4 +15,16 @@ public class AttackCommand : UnitCommand
 
     public override void Execute() => GameService.Instance.ActionService.GetActionByType(ActionType.Attack)
         .PerformAction(actorUnit, targetUnit, willHitTarget);
+
+    public override void Undo()
+    {
+        if (willHitTarget)
+        {
+            if (!targetUnit.IsAlive())
+                targetUnit.Revive();
+
+            targetUnit.RestoreHealth(actorUnit.CurrentPower);
+            actorUnit.Owner.ResetCurrentActiveUnit();
+        }
+    }
 }

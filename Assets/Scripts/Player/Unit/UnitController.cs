@@ -58,6 +58,8 @@ namespace Command.Player
             GameService.Instance.UIService.SetActionContainerAlignment(Owner.PlayerID);
         }
 
+        public void ProcessUnitCommand(UnitCommand commandToProcess) => GameService.Instance.CommandInvoker.ProcessCommand(commandToProcess);
+
         private void SetAliveState(UnitAliveState stateToSet) => aliveState = stateToSet;
 
         public void SetUsedState(UnitUsedState stateToSet) => UsedState = stateToSet;
@@ -77,6 +79,18 @@ namespace Command.Player
                 unitView.PlayAnimation(UnitAnimations.HIT);
 
             unitView.UpdateHealthBar((float) CurrentHealth / CurrentMaxHealth);
+        }
+
+        public void PowerUp()
+        {
+            CurrentPower += (int)(CurrentPower * 0.2f);
+        }
+
+        public void UnpowerUp()
+        {
+            var previousPower = CurrentPower/1.2f;
+
+            CurrentPower -= (int)(CurrentPower - previousPower);
         }
 
         public void RestoreHealth(int healthToRestore)
@@ -147,7 +161,11 @@ namespace Command.Player
 
         public void ResetStats() => CurrentPower = unitScriptableObject.Power;
 
-        public void Revive() => SetAliveState(UnitAliveState.ALIVE);
+        public void Revive()
+        {
+            SetAliveState(UnitAliveState.ALIVE);
+            unitView.PlayAnimation(UnitAnimations.IDLE);
+        }
 
         public void Destroy() => UnityEngine.Object.Destroy(unitView.gameObject);
 

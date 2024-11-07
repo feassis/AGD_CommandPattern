@@ -19,6 +19,8 @@ namespace Command.Actions
             actions.Add(ActionType.Meditate, new MeditateAction());
             actions.Add(ActionType.BerserkAttack, new BerserkAttackAction());
             actions.Add(ActionType.ThirdEye, new ThirdEyeAction());
+            actions.Add(ActionType.ChronoShield, new ChronoShieldAction());
+            actions.Add(ActionType.TimeRipple, new TimeRippleAction());
         }
 
         public IAction GetActionByType(ActionType type)

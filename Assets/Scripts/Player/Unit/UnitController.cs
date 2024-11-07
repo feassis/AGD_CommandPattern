@@ -17,17 +17,19 @@ namespace Command.Player
         public UnitType UnitType => unitScriptableObject.UnitType;
         public int CurrentHealth { get; private set; }
         public UnitUsedState UsedState { get; private set; }
+
+        private int turnsOfInvulnerability = 0;
         
         private UnitAliveState aliveState;
         private Vector3 originalPosition;
         public int CurrentPower;
         public int CurrentMaxHealth;
 
-        public UnitController(PlayerController owner, UnitScriptableObject unitScriptableObject, Vector3 unitPosition, int unitId)
+        public UnitController(PlayerController owner, UnitScriptableObject unitScriptableObject, Vector3 unitPosition, int unitId, int playerID)
         {
             Owner = owner;
             this.unitScriptableObject = unitScriptableObject;
-            UnitID = unitId;
+            UnitID = playerID % 2 == 0 ?  unitId : -unitId;
             originalPosition = unitPosition;
 
             InitializeView(unitPosition);
@@ -52,6 +54,11 @@ namespace Command.Player
 
         public void StartUnitTurn()
         {
+            if(turnsOfInvulnerability >0)
+            {
+                turnsOfInvulnerability--;
+            }
+
             unitView.SetUnitIndicator(true);
             GameService.Instance.UIService.ShowActionOverlay(Owner.PlayerID);
             GameService.Instance.UIService.ShowActionSelectionView(unitScriptableObject.executableCommands);
@@ -68,6 +75,11 @@ namespace Command.Player
 
         public void TakeDamage(int damageToTake)
         {
+            if(turnsOfInvulnerability > 0)
+            {
+                return;
+            }
+
             CurrentHealth -= damageToTake;
 
             if (CurrentHealth <= 0)
@@ -79,6 +91,16 @@ namespace Command.Player
                 unitView.PlayAnimation(UnitAnimations.HIT);
 
             unitView.UpdateHealthBar((float) CurrentHealth / CurrentMaxHealth);
+        }
+
+        public void AddInvulnerabilityForNTurns(int turns)
+        {
+            turnsOfInvulnerability += turns;
+        }
+
+        public void SubtractInvulnerabilityForNTurns(int turns)
+        {
+            turnsOfInvulnerability -= turns;
         }
 
         public void PowerUp()
@@ -95,6 +117,11 @@ namespace Command.Player
 
         public void RestoreHealth(int healthToRestore)
         {
+            if (turnsOfInvulnerability > 0)
+            {
+                return;
+            }
+
             CurrentHealth = CurrentHealth + healthToRestore > CurrentMaxHealth ? CurrentMaxHealth : CurrentHealth + healthToRestore;
             unitView.UpdateHealthBar((float)CurrentHealth / CurrentMaxHealth);
         }

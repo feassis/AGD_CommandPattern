@@ -1,5 +1,7 @@
 using Command.Main;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// A class responsible for invoking and managing commands.
@@ -27,7 +29,12 @@ public class CommandInvoker
     /// <param name="commandToProcess">The command to be processed.</param>
     public void ProcessCommand(ICommand commandToProcess)
     {
-        ExecuteCommand(commandToProcess);
+        GameService.Instance.StartCoroutine(ExecComandRoutine(commandToProcess));   
+    }
+
+    private IEnumerator ExecComandRoutine(ICommand commandToProcess)
+    {
+        yield return ExecuteCommand(commandToProcess);
         RegisterCommand(commandToProcess);
     }
 
@@ -35,7 +42,12 @@ public class CommandInvoker
     /// Execute a command, invoking its associated action.
     /// </summary>
     /// <param name="commandToExecute">The command to be executed.</param>
-    public void ExecuteCommand(ICommand commandToExecute) => commandToExecute.Execute();
+    public IEnumerator ExecuteCommand(ICommand commandToExecute)
+    {
+        commandToExecute.Execute();
+
+        yield return new WaitForSeconds(1.5f);
+    }
 
     /// <summary>
     /// Register a command by adding it to the command registry stack.
@@ -54,5 +66,50 @@ public class CommandInvoker
     {
         if (!RegistryEmpty() && CommandBelongsToActivePlayer())
             commandRegistry.Pop().Undo();
+    }
+
+    public void UndoEveryonesLastTurn()
+    {
+        if (RegistryEmpty())
+        {
+            return;
+        }
+
+        var currentActorID = (commandRegistry.Peek() as UnitCommand).commandData.ActorUnitID;
+
+        commandRegistry.Pop().Undo();
+
+        while(!RegistryEmpty() && (commandRegistry.Peek() as UnitCommand).commandData.ActorPlayerID != currentActorID)
+        {
+            commandRegistry.Pop().Undo();
+        }
+    }
+
+    public List<ICommand> GetEveryOneLastAction()
+    {
+        if (RegistryEmpty())
+        {
+            return null;
+        }
+
+        var currentActorID = (commandRegistry.Peek() as UnitCommand).commandData.ActorUnitID;
+
+        var commandStackArray = commandRegistry.ToArray() ;
+
+        int index = commandStackArray.Length - 2;
+
+        while(currentActorID != ((commandStackArray[index] as UnitCommand).commandData.ActorUnitID) && index >=0)
+        {
+            index--;
+        }
+
+        List<ICommand> result = new List<ICommand>();
+
+        for(int i = index; i< commandStackArray.Length; i++)
+        {
+            result.Add(commandStackArray[i]);
+        }
+        result.Reverse();
+        return result;
     }
 }

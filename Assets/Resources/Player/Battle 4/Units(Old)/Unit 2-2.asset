@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66518e3bb2dd340478171f97ec326357, type: 3}
-  m_Name: Mage 1
+  m_Name: Unit 2-2
   m_EditorClassIdentifier: 
-  UnitType: 3
-  UnitPrefab: {fileID: 7170176875333329667, guid: 8346e216771ef4d4d91d50605efc7328, type: 3}
-  MaxHealth: 8
-  Power: 6
-  executableCommands: 010000000500000007000000
+  UnitID: 2
+  UnitPrefab: {fileID: 3287956947383386545, guid: 4b370d9af77e23e45823316e4fe4da79, type: 3}
+  MaxHealth: 10
+  Power: 5
+  executableCommands: 0100000002000000
   EnemyBattlePositionOffset: {x: 3, y: 0, z: 0}
   MovementSpeed: 20

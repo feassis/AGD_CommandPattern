@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66518e3bb2dd340478171f97ec326357, type: 3}
   m_Name: Mage 2
   m_EditorClassIdentifier: 
-  UnitType: 0
+  UnitType: 3
   UnitPrefab: {fileID: 3287956947383386545, guid: 81e11e62b52cbc74dbd90ed212f91beb, type: 3}
   MaxHealth: 8
   Power: 6

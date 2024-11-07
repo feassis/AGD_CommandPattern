@@ -91,6 +91,10 @@ namespace Command.Input
                     return new MeditateCommand(commandData);
                 case ActionType.ThirdEye:
                     return new ThirdEyeCommand(commandData);
+                case ActionType.ChronoShield:
+                    return new ChronoShieldCommand(commandData);
+                case ActionType.TimeRipple:
+                    return new TimeRippleCommand(commandData);
                 default:
                     // If the selectedCommandType is not recognized, throw an exception.
                     throw new System.Exception($"No Command found of type: {selectedActionType}");

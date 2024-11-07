@@ -25,7 +25,7 @@ namespace Command.Player
 
             for(int i=0; i<unitScriptableObjects.Count; i++)
             {
-                units.Add(new UnitController(this, unitScriptableObjects[i], unitPositions[i]));
+                units.Add(new UnitController(this, unitScriptableObjects[i], unitPositions[i], i));
             }
         }
 

@@ -23,11 +23,11 @@ namespace Command.Player
         public int CurrentPower;
         public int CurrentMaxHealth;
 
-        public UnitController(PlayerController owner, UnitScriptableObject unitScriptableObject, Vector3 unitPosition)
+        public UnitController(PlayerController owner, UnitScriptableObject unitScriptableObject, Vector3 unitPosition, int unitId)
         {
             Owner = owner;
             this.unitScriptableObject = unitScriptableObject;
-            UnitID = unitScriptableObject.UnitID;
+            UnitID = unitId;
             originalPosition = unitPosition;
 
             InitializeView(unitPosition);
@@ -83,12 +83,12 @@ namespace Command.Player
 
         public void PowerUp()
         {
-            CurrentPower += (int)(CurrentPower * 0.2f);
+            CurrentPower += (int)(CurrentPower * 0.4f);
         }
 
         public void UnpowerUp()
         {
-            var previousPower = CurrentPower/1.2f;
+            var previousPower = CurrentPower/1.4f;
 
             CurrentPower -= (int)(CurrentPower - previousPower);
         }
@@ -142,13 +142,15 @@ namespace Command.Player
         {
             if (actionType == ActionType.None)
                 return;
-            
-            if (actionType == unitScriptableObject.executableCommands[0])
-                unitView.PlayAnimation(UnitAnimations.ACTION1);
-            else if (actionType == unitScriptableObject.executableCommands[1])
-                unitView.PlayAnimation(UnitAnimations.ACTION2);
-            else
-                throw new System.Exception($"No Animation found for the action type : {actionType}");
+
+            for (int i = 0; i < unitScriptableObject.executableCommands.Count; i++)
+            {
+                if(actionType == unitScriptableObject.executableCommands[i])
+                {
+                    unitView.PlayAnimation(i % 2 == 0 ? UnitAnimations.ACTION1 : UnitAnimations.ACTION2);
+                    break;
+                }
+            }
         }
 
         public void OnActionExecuted()

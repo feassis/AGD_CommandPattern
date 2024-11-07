@@ -7,7 +7,6 @@ namespace Command.Player
     [CreateAssetMenu(fileName = "UnitScriptableObject", menuName = "ScriptableObjects/UnitScriptableObject")]
     public class UnitScriptableObject : ScriptableObject
     {
-        public int UnitID;
         public UnitType UnitType;
         public UnitView UnitPrefab;
         public int MaxHealth;

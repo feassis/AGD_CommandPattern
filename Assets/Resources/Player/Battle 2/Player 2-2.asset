@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerID: 2
   UnitData:
-  - {fileID: 11400000, guid: 04bbcce2710f43046a9e614f3f87d695, type: 2}
-  - {fileID: 11400000, guid: a7ed7997273f1a64fbef0a0a3a044fcc, type: 2}
-  - {fileID: 11400000, guid: e71e7caddc2e6a74e948bd2c6220157e, type: 2}
+  - {fileID: 11400000, guid: abe3be2c05ce2ee42857fdadd9b79b0d, type: 2}
+  - {fileID: 11400000, guid: 054adad5053576146a64527645cbd3b2, type: 2}
+  - {fileID: 11400000, guid: bb257b7b0896c4a4ea7229fa81309c52, type: 2}
   UnitPositions:
   - {x: 6, y: 1.2, z: 0}
   - {x: 4, y: 0, z: 0}

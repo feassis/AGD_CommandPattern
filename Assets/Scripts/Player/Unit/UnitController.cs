@@ -4,6 +4,7 @@ using Command.Actions;
 using System.Collections;
 using System;
 using Object = UnityEngine.Object;
+using System.Collections.Generic;
 
 namespace Command.Player
 {
@@ -19,11 +20,17 @@ namespace Command.Player
         public UnitUsedState UsedState { get; private set; }
 
         private int turnsOfInvulnerability = 0;
+        private int turnsOfMinionShielding = 0;
         
         private UnitAliveState aliveState;
         private Vector3 originalPosition;
         public int CurrentPower;
         public int CurrentMaxHealth;
+
+        private List<MinionController> minions = new List<MinionController>();
+        private const float horizontalOffset = 0.25f;
+
+        public const int bloodFeastMultipliyer = 5;
 
         public UnitController(PlayerController owner, UnitScriptableObject unitScriptableObject, Vector3 unitPosition, int unitId, int playerID)
         {
@@ -34,6 +41,17 @@ namespace Command.Player
 
             InitializeView(unitPosition);
             InitializeVariables();
+
+            GameService.Instance.EventService.OnMinionDeath.AddListener(OnMinionDeath);
+        }
+        ~UnitController()
+        {
+            GameService.Instance.EventService.OnMinionDeath.RemoveListener(OnMinionDeath);
+        }
+
+        private void OnMinionDeath(MinionController controller)
+        {
+            minions.Remove(controller);
         }
 
         private void InitializeView(Vector3 positionToSet)
@@ -59,10 +77,67 @@ namespace Command.Player
                 turnsOfInvulnerability--;
             }
 
+            if (turnsOfMinionShielding > 0)
+            {
+                turnsOfMinionShielding--;
+            }
+
             unitView.SetUnitIndicator(true);
             GameService.Instance.UIService.ShowActionOverlay(Owner.PlayerID);
             GameService.Instance.UIService.ShowActionSelectionView(unitScriptableObject.executableCommands);
             GameService.Instance.UIService.SetActionContainerAlignment(Owner.PlayerID);
+        }
+
+        public int GetAllMinionsAttackPower()
+        {
+            int AP = 0;
+            foreach (var minion in minions)
+            {
+                AP += minion.GetAttackPower();
+            }
+
+            return AP;
+        }
+
+        public int GetMinionCount() => minions.Count;
+
+        public int GetBloodFeastAmount()
+        {
+            return minions.Count * bloodFeastMultipliyer;
+        }
+
+        public void BloodFeast()
+        {
+            int minionCount = minions.Count;
+
+            for(int i = minions.Count - 1; i >= 0; i--)
+            {
+                minions[i].Kill();
+            }
+        }
+
+        public void KillLastMinion()
+        {
+            if(minions.Count <= 0)
+            {
+                return;
+            }
+
+            var minion = minions[minions.Count - 1];
+            minion.Kill();
+
+            minions.Remove(minion);
+        }
+
+        public void SpawnMinion()
+        {
+            MinionView minionView = unitScriptableObject.MinionPrefab;
+
+            Vector3 spawnPos = unitView.transform.position + (minions.Count)*(Owner.PlayerID % 2 == 0 ? new Vector3(horizontalOffset, 0, 0) : new Vector3(-horizontalOffset, 0, 0));
+
+            MinionModel minionModel = new MinionModel(1, 3);
+
+            minions.Add(new MinionController(minionView, spawnPos, minionModel, unitView.transform));
         }
 
         public void ProcessUnitCommand(UnitCommand commandToProcess) => GameService.Instance.CommandInvoker.ProcessCommand(commandToProcess);
@@ -77,6 +152,12 @@ namespace Command.Player
         {
             if(turnsOfInvulnerability > 0)
             {
+                return;
+            }
+
+            if(turnsOfMinionShielding > 0 && minions.Count > 0)
+            {
+                minions[minions.Count - 1].TakeDamage(damageToTake);
                 return;
             }
 
@@ -103,6 +184,16 @@ namespace Command.Player
             turnsOfInvulnerability -= turns;
         }
 
+        public void AddMinionShieldyForNTurns(int turns)
+        {
+            turnsOfMinionShielding += turns;
+        }
+
+        public void SubtractMinionShieldForNTurns(int turns)
+        {
+            turnsOfMinionShielding -= turns;
+        }
+
         public void PowerUp()
         {
             CurrentPower += (int)(CurrentPower * 0.4f);
@@ -117,7 +208,7 @@ namespace Command.Player
 
         public void RestoreHealth(int healthToRestore)
         {
-            if (turnsOfInvulnerability > 0)
+            if (turnsOfInvulnerability > 0 || turnsOfMinionShielding > 0)
             {
                 return;
             }

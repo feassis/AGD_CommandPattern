@@ -12,5 +12,8 @@ namespace Command.Actions
         ThirdEye,
         ChronoShield, 
         TimeRipple,
+        SummonMinion,
+        MinionFortress,
+        BloodFeast
     }
 }

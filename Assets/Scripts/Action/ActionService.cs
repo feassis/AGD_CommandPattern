@@ -21,6 +21,9 @@ namespace Command.Actions
             actions.Add(ActionType.ThirdEye, new ThirdEyeAction());
             actions.Add(ActionType.ChronoShield, new ChronoShieldAction());
             actions.Add(ActionType.TimeRipple, new TimeRippleAction());
+            actions.Add(ActionType.SummonMinion, new SummonMinionAction());
+            actions.Add(ActionType.MinionFortress, new MinionFortressAction());
+            actions.Add(ActionType.BloodFeast, new BloodFeastAction());
         }
 
         public IAction GetActionByType(ActionType type)

@@ -14,5 +14,6 @@ namespace Command.Player
         public List<ActionType> executableCommands;
         public Vector3 EnemyBattlePositionOffset;
         public float MovementSpeed;
+        public MinionView MinionPrefab;
     }
 }

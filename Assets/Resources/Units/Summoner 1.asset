@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66518e3bb2dd340478171f97ec326357, type: 3}
+  m_Name: Summoner 1
+  m_EditorClassIdentifier: 
+  UnitType: 3
+  UnitPrefab: {fileID: 7170176875333329667, guid: ad5bad82c43c361459918c6d471f0d47, type: 3}
+  MaxHealth: 50
+  Power: 0
+  executableCommands: 0a0000000b0000000c000000
+  EnemyBattlePositionOffset: {x: 3, y: 0, z: 0}
+  MovementSpeed: 20
+  MinionPrefab: {fileID: 1136370917119837979, guid: abfb94e748c5efb4f9293e3fece36fd5, type: 3}

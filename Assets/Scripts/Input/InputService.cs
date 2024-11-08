@@ -95,6 +95,12 @@ namespace Command.Input
                     return new ChronoShieldCommand(commandData);
                 case ActionType.TimeRipple:
                     return new TimeRippleCommand(commandData);
+                case ActionType.MinionFortress:
+                    return new MinionFortressCommand(commandData);
+                case ActionType.SummonMinion:
+                    return new SummonMinionCommand(commandData);
+                case ActionType.BloodFeast:
+                    return new BloodFeastCommand(commandData);
                 default:
                     // If the selectedCommandType is not recognized, throw an exception.
                     throw new System.Exception($"No Command found of type: {selectedActionType}");

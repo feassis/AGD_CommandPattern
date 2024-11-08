@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Berserker 1
   m_EditorClassIdentifier: 
   UnitType: 4
-  UnitPrefab: {fileID: 3287956947383386545, guid: cc31d5544f3c02f48b8687eff615d8b4, type: 3}
+  UnitPrefab: {fileID: 7170176875333329667, guid: 51727404ff102f747bbef208e93b2b3e, type: 3}
   MaxHealth: 30
   Power: 3
   executableCommands: 010000000300000006000000
   EnemyBattlePositionOffset: {x: 3, y: 0, z: 0}
   MovementSpeed: 20
+  MinionPrefab: {fileID: 0}

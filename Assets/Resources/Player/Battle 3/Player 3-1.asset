@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerID: 1
   UnitData:
-  - {fileID: 11400000, guid: c896c60d547740a449d509959226fb0f, type: 2}
-  - {fileID: 11400000, guid: d87c607aae413f64d9ee4e316c42fd59, type: 2}
-  - {fileID: 11400000, guid: b5c2afdf4ed1dda42a7548dc17f9ff35, type: 2}
-  - {fileID: 11400000, guid: 86d296990e0d98e42a1bcbd4dd24c7cd, type: 2}
+  - {fileID: 11400000, guid: 6c20d7ba21001b2458eb03e6a9c04c7d, type: 2}
+  - {fileID: 11400000, guid: a9156914591c5bc4e9b0eb7703e0cd23, type: 2}
+  - {fileID: 11400000, guid: 213d4b4bdd90c4e48a9bd87cb08df862, type: 2}
+  - {fileID: 11400000, guid: 8c94f08cc2d872c4bb6968298fe27059, type: 2}
   UnitPositions:
   - {x: -6, y: 2, z: 0}
   - {x: -3, y: 1.2, z: 0}

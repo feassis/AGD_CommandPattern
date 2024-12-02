@@ -10,12 +10,14 @@ namespace Command.Actions
         private const float hitChance = 0.2f;
         private UnitController actorUnit;
         private UnitController targetUnit;
-        public TargetType TargetType  => TargetType.Enemy;
+        private bool isSuccessful;
+        public TargetType TargetType => TargetType.Enemy;
 
-        public void PerformAction(UnitController actorUnit, UnitController targetUnit)
+        public void PerformAction(UnitController actorUnit, UnitController targetUnit, bool isSuccessful)
         {
             this.actorUnit = actorUnit;
             this.targetUnit = targetUnit;
+            this.isSuccessful = isSuccessful;
 
             actorUnit.PlayBattleAnimation(ActionType.Cleanse, CalculateMovePosition(targetUnit), OnActionAnimationCompleted);
         }
@@ -24,13 +26,11 @@ namespace Command.Actions
         {
             GameService.Instance.SoundService.PlaySoundEffects(Sound.SoundType.CLEANSE);
 
-            if (IsSuccessful())
+            if (isSuccessful)
                 targetUnit.ResetStats();
             else
                 GameService.Instance.UIService.ActionMissed();
         }
-
-        public bool IsSuccessful() => Random.Range(0f, 1f) < hitChance;
 
         public Vector3 CalculateMovePosition(UnitController targetUnit) => targetUnit.GetEnemyPosition();
     }

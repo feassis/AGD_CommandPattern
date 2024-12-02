@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Command.Main;
 
 namespace Command.UI
 {
@@ -18,11 +19,20 @@ namespace Command.UI
         [SerializeField] private Color ActionSelectionOverlayColor;
         [SerializeField] private Image backgroundImage;
 
+        [SerializeField] Button undoButton;
+
+        private void Awake()
+        {
+            undoButton.onClick.AddListener(OnUndoButtonClicked);
+        }
+
         public void SetController(GameplayUIController controllerToSet) 
         {
             controller = controllerToSet;
             missedText.canvasRenderer.SetAlpha(0);
         }
+
+        public void OnUndoButtonClicked() => GameService.Instance.CommandInvoker.Undo();
 
         public void DisableView() => gameObject.SetActive(false);
 
